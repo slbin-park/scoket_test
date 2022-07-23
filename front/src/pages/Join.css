@@ -1,0 +1,112 @@
+html,
+body {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  color: black;
+}
+.chat_data {
+  display: flex;
+  margin: 20px;
+  border-radius: 10px;
+  justify-content: center;
+  background-color: aliceblue;
+  flex-direction: column;
+}
+
+.chat_list {
+  margin: 5px;
+  background-color: aqua;
+  padding: 3px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: end;
+}
+.chat_send {
+  position: fixed;
+  margin-bottom: 5px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  height: 3rem;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px);
+}
+.send_btn {
+  width: 100px;
+}
+#root {
+  height: 100vh;
+}
+.msg_data {
+  font-size: 20px;
+  display: flex;
+  color: white;
+  flex-direction: column;
+  height: 100%;
+}
+* {
+  box-sizing: border-box;
+}
+
+.joinOuterContainer {
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  align-items: center;
+  background-color: #1a1a1d;
+  display: flex;
+  flex-direction: column;
+}
+
+.joinInnerContainer {
+  width: 20%;
+}
+
+.joinInput {
+  border-radius: 0;
+  padding: 15px 20px;
+  width: 100%;
+}
+
+.heading {
+  color: white;
+  font-size: 2.5em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid white;
+}
+
+.button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2979ff;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  width: 100%;
+}
+
+.mt-20 {
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .joinOuterContainer {
+    height: 100%;
+  }
+
+  .joinInnerContainer {
+    width: 90%;
+  }
+}
+
+button:focus {
+  outline: 0;
+}
