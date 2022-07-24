@@ -41,17 +41,17 @@ io.on('connection', function (socket) {
     socket.on("roommake", (name) => {  //roomjoin 이벤트명으로 데이터받기 //socket.on
         console.log(name, '로 방이 만들어짐');
         room.push(name)
-        console.log(room)
+        // console.log(room)
         io.emit('message', room);
         socket.join(name);               //userid로 방 만들기
     });
 
     // 룸 들어오기
     socket.on("roomjoin", (room_name) => {  //roomjoin 이벤트명으로 데이터받기 //socket.on
-        console.log(room_name)
+        // console.log(room_name)
         socket.nickname = room_name.nickname;
-        console.log('sk nickname = ', socket.nickname)
-        console.log(socket.id)
+        // console.log('sk nickname = ', socket.nickname)
+        // console.log(socket.id)
         console.log(`${room_name.nickname} 님이 ${room_name.room} 으로 접속했습니다.`);
         socket.join(room_name.room); // room으로 접속
         // console.log(socket.rooms)
@@ -60,8 +60,8 @@ io.on('connection', function (socket) {
 
     // 룸으로 채팅 보내기
     socket.on('chat message', (msg) => {
-        console.log('채팅 메세지에 nickname : ', socket.nickname)
-        console.log(socket.nickname)
+        // console.log('채팅 메세지에 nickname : ', socket.nickname)
+        // console.log(socket.nickname)
 
         const room_name = msg.room_name;
         io.to(room_name).emit('chat message', { nickname: socket.nickname, message: msg.msg });
@@ -76,7 +76,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', () => {
-        console.log('disconnect')
+        console.log(`${socket.nickname} 님이 disconnect`)
         // io.emit('chat message', `${socket.id} 가 나갔습니다.`);
     })
 

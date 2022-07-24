@@ -1,35 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useRef, useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './Join.css'
 import io from "socket.io-client";   //모듈 가져오기
 import Message from './component/message';
 import Chat from './component/chat'
-const socket = io("http://localhost:3001");  //3001번 포트 사용(서버)
+
 
 const Join = () => {
+    const socket = useRef();
+    let navigate = useNavigate();
+    // io("http://localhost:3001");  //3001번 포트 사용(서버)
     const [name, setName] = useState('')
     const [room, setRoom] = useState('')
     const [msg, set_msg] = useState([])
     const [chat_data, set_chat_data] = useState([]);
     const [rom_name, set_rom_name] = useState('')
+    const location = useLocation();
+
     useEffect(() => {
-        socket.on('message', (message) => {
+        socket.current = io("http://localhost:3001");
+        socket.current.on('message', (message) => {
             set_msg((prev) => message)
         })
-        socket.on('chat message', (message) => {
+        socket.current.on('chat message', (message) => {
             // console.log(message)
             set_chat_data((prev) => [...prev, message])
         })
     }, [])
 
     // 방 만들기
-    const Click_btn = () => {
-        socket.emit("roommake", room);
+    const make_room = () => {
+        if (room === '') {
+            alert("방 이름을 입력해주세요.")
+        }
+        else {
+            socket.current.emit("roommake", room);
+        }
     }
 
+    // 방 들어가기
     const join_room = (e, room_name) => {
-        set_rom_name(room_name)
-        socket.emit("roomjoin", room_name);
+        if (name === '') {
+            alert('이름을 입력해주세요 . ')
+        }
+        else {
+            navigate(`/chat/${name}/${room_name}`)
+            set_rom_name(room_name)
+            socket.current.emit("roomjoin", room_name);
+        }
     }
 
     const send_chat = (e, chat) => {
@@ -37,7 +55,7 @@ const Join = () => {
             room_name: rom_name,
             msg: chat
         }
-        socket.emit("chat message", data);
+        socket.current.emit("chat message", data);
     }
 
     return (
@@ -60,7 +78,7 @@ const Join = () => {
                         onChange={(event) => setRoom(event.target.value)}
                     />
                 </div>
-                <button className={'button mt-20'} onClick={(e) => Click_btn(e)} type='submit'>
+                <button className={'button mt-20'} onClick={(e) => make_room(e)} type='submit'>
                     방만들기
                 </button>
             </div>

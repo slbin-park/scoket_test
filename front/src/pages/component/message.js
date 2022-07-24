@@ -6,14 +6,14 @@ const Message = ({ msg, join_room, name }) => {
     return (
         <div className='msg_data'>
             {msg !== undefined ?
-                msg.map((data) => {
-                    console.log(data)
+                msg.map((data, i) => {
+                    // console.log(data)
                     return (
-                        <Link to={`/chat/${name}/${data}`}>
-                            <button className={'button mt-20'}>
+                        <div key={i}>
+                            <button onClick={(e) => join_room(e, data)} className={'button mt-20'}>
                                 {data}
                             </button>
-                        </Link>
+                        </div>
                     )
                 })
                 :
@@ -24,4 +24,4 @@ const Message = ({ msg, join_room, name }) => {
     )
 }
 
-export default Message
+export default React.memo(Message);

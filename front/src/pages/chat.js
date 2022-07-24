@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import io from "socket.io-client";   //모듈 가져오기
-const socket = io("http://localhost:3001");  //3001번 포트 사용(서버)
+// const socket = io("http://localhost:3001");  //3001번 포트 사용(서버)
 
 export const Chat = () => {
+    const socket = useRef();
+
     let { nickname, room } = useParams();
     // console.log(nickname, room)
     const [chat_data, set_chat_data] = useState([]);
     const [chat, set_chat] = useState('');
 
     useEffect(() => {
-        socket.emit("roomjoin", { nickname, room });
+        socket.current = io("http://localhost:3001");
 
-        socket.on('chat message', (msg) => {
+        socket.current.emit("roomjoin", { nickname, room });
+
+        socket.current.on('chat message', (msg) => {
             console.log(msg)
             set_chat_data((prev) => [...prev, { nickname: msg.nickname, message: msg.message }])
         })
@@ -24,7 +28,8 @@ export const Chat = () => {
             room_name: room,
             msg: chat
         }
-        socket.emit("chat message", data);
+        socket.current.emit("chat message", data);
+        set_chat('')
     }
     return (
         <div className='chat_data'>
@@ -52,6 +57,7 @@ export const Chat = () => {
                 send_chat(e)
             }}>
                 <input className='joinInput'
+                    value={chat}
                     onChange={(event) => set_chat(event.target.value)}
                 >
                 </input>
